@@ -2,7 +2,6 @@ const express = require('express')
 const app = express();
 const port = 3000;
 
-
 var users = [{
     name:'john',kidneys :[
         {healthy : false}]
@@ -12,18 +11,11 @@ app.use(express.json())
 app.get('/', function(req,res){
     const johnkidneys = users[0].kidneys;
     const numberOfKidney = johnkidneys.length;
-    //let healthyKidneys = 0;
     let healthyKidneys = johnkidneys.filter((i) => i.healthy)
     healthyKidneys = healthyKidneys.length ;
-    // for (let i = 0; i < johnkidneys.length; i++){
-    //     if (johnkidneys[i].healthy){
-    //         healthyKidneys = healthyKidneys + 1
-    //     }
-    // }
     
     const numberOfUnhealthyKidney = numberOfKidney - healthyKidneys;
     res.json({
-        
         numberOfKidney,
         healthyKidneys,
         numberOfUnhealthyKidney
