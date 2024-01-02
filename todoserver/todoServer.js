@@ -2,13 +2,10 @@
   const express = require('express');
   const bodyParser = require('body-parser');
   const path = require('path')
-  const prompt = require("prompt-sync")({sigint: true});
-  const cors = require('cors')
   const app = express();
   const port = 3000;
   app.use(bodyParser.json());
-  app.use(cors())
-  
+    
   let todo = [
      { "id" : 1, "title": "Buy groceries", "completed": false, description: "I should buy groceries" },
      { "id" : 2, "title": "cooking", "completed": false, description: "I should cook food"}
@@ -19,13 +16,11 @@ app.get('/todo/',function(req,res){
 
 app.get('/todo/:id',function(req,res){
   todo.filter(function(i) { 
-    if (i.id == req.params.id){
-      
+    if (i.id == req.params.id){    
         return res.send(i);
      }
     })
 })
-
 
 app.post('/',function(req,res){
   let data = {id : Math.round(Math.random()*100),
@@ -53,10 +48,6 @@ app.delete('/todo/:id',function(req,res){
    delete todo[ind]
     res.json({messages : 'Deleted'})
    }
-})
-
-app.get('/',function(req,res){
-  res.sendFile(path.join(__dirname,'index.html'))
 })
 
 app.listen(port)
