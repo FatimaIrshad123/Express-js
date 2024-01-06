@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <script>
+function deleteDone(){
+    console.log("Delete done")
+}
+function deletetodo(id){
+    console.log(id)
+    fetch('http://localhost:3000/todo/'+id,{method : 'DELETE'}).then(deleteDone)
+}
+
+     function todoCallback(data){
+        var parentElement = document.getElementById('mainArea')
+            for (var i=0; i < data.length; i++){
+                var childElement = document.createElement('div');
+                
+                var grandChildElement1 = document.createElement('span')
+                grandChildElement1.innerHTML = data[i].title;
+                
+                var grandChildElement2 = document.createElement('span')
+                grandChildElement2.innerHTML = data[i].description;
+
+                var grandChildElement3 = document.createElement('button')
+                grandChildElement3.setAttribute('onclick','deletetodo('+data[i].id+')')
+                grandChildElement3.innerHTML = 'delete';
+
+                childElement.appendChild(grandChildElement1);
+                childElement.appendChild(grandChildElement2);
+                childElement.appendChild(grandChildElement3);
+                
+                parentElement.appendChild(childElement)
+            }
+            
+     }
+     function callbackfn2(result){
+            result.json().then(todoCallback)
+        }
+        function getData(){
+            let sendobj = {method : 'GET'}
+            
+        fetch("http://localhost:3000/todo/",sendobj).then(callbackfn2)
+        }
+getData()
+    function logResponseBody(data){
+    console.log(data.title)
+                var parentElement = document.getElementById('mainArea')
+            
+                var childElement = document.createElement('div');
+
+                var grandChildElement1 = document.createElement('span')
+                grandChildElement1.innerHTML = data.title;
+                
+                var grandChildElement2 = document.createElement('span')
+                grandChildElement2.innerHTML = data.description;
+
+                var grandChildElement3 = document.createElement('button')
+                grandChildElement3.setAttribute('onclick','deletetodo('+data.id+')')
+                grandChildElement3.innerHTML = 'delete';
+
+                childElement.appendChild(grandChildElement1);
+                childElement.appendChild(grandChildElement2);
+                childElement.appendChild(grandChildElement3);
+
+                parentElement.appendChild(childElement)
+            
+            
+        }
+           //logResponseBody()
+function callbackfn(result){
+    result.json().then(logResponseBody)
+}
+function onPress(){
+    let title = document.getElementById('title').value;
+    let description = document.getElementById('description').value;
+    let id = Math.round(Math.random()*100)
+        let sendobj = {method : 'POST',body : JSON.stringify({
+            id : id,
+             title : title, 
+             description:description
+            }),
+            headers : {'Content-Type' : 'application/json'}}
+        fetch("http://localhost:3000/",sendobj).then(callbackfn)
+        }
+        
+    </script>
+</head>
+<body>
+    Todo Title : <input type="text" id="title" placeholder="Title">
+    <br><br>
+    Todo Description : <input type="text" id="description" placeholder="Description">
+    <br><br>
+    <button onclick="onPress()">Send todo</button>
+    <div id="mainArea"></div>
+</body>
+</html>
